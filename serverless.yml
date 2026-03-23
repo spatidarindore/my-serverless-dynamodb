@@ -2,7 +2,6 @@ service: python-lambda-dynamodb
 frameworkVersion: "4.33.0"
 org: sunilorg
 app: my-serverless-app
-service: python-lambda-dynamodb
 provider:
   name: aws
   runtime: python3.12
