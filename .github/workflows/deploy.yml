@@ -1,0 +1,45 @@
+name: Deploy Serverless App
+
+on:
+  push:
+    branches:
+      - master   # runs when you push to main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Setup Node.js (for Vue + Serverless)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Build Vue frontend
+      - name: Build Vue app
+        run: npm run build
+
+      # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      # Upload frontend to S3
+      - name: Upload frontend to S3
+        run: aws s3 sync dist/ s3://my-serverless-dynamodb --delete
+
+      # Deploy backend with Serverless
+      - name: Deploy backend
+        run: npx serverless deploy
