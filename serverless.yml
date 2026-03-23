@@ -1,0 +1,59 @@
+service: python-lambda-dynamodb
+
+provider:
+  name: aws
+  runtime: python3.12
+  region: ap-south-1
+  stage: dev
+  environment:
+    DYNAMODB_TABLE: MyItemsTable
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:Scan
+          Resource:
+            - arn:aws:dynamodb:ap-south-1:426744279061:table/MyItemsTable
+
+
+functions:
+  api:
+    handler: handler.main
+    events:
+      - http:
+          path: items
+          method: get
+          cors: true
+      - http:
+          path: items
+          method: post
+          cors: true
+      - http:
+          path: items
+          method: options
+          cors: true
+
+resources:
+  Resources:
+    MyItemsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: MyItemsTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        
+plugins:
+  - serverless-s3-sync
+
+custom:
+  s3Sync:
+    - bucketName: my-serverless-dynamodb   # replace with your actual bucket name
+      localDir: dist              # Vue build output folder
+
