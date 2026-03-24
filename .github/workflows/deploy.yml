@@ -39,6 +39,12 @@ jobs:
       # Upload frontend to S3
       - name: Upload frontend to S3
         run: aws s3 sync dist/ s3://my-serverless-dynamodb --delete
+        
+      - name: Debug Serverless Access Key
+        run: echo "Access Key is set"
+        env:
+          SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+
 
       # Deploy backend with Serverless
       - name: Deploy backend
