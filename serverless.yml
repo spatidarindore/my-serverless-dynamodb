@@ -9,15 +9,14 @@ provider:
   stage: dev
   environment:
     DYNAMODB_TABLE: MyItemsTable
-  iam:
-    role:
-      statements:
-        - Effect: Allow
-          Action:
-            - dynamodb:PutItem
-            - dynamodb:Scan
-          Resource:
-            - arn:aws:dynamodb:ap-south-1:426744279061:table/MyItemsTable
+  iamRoleStatements:   # <-- use this instead of iam.role
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:Scan
+      Resource:
+        - arn:aws:dynamodb:ap-south-1:426744279061:table/MyItemsTable
+
 
 
 functions:
