@@ -30,7 +30,7 @@ export default {
   methods: {
     async submitForm() {
       try {
-        const response = await fetch('https://bn5bws8gj4.execute-api.ap-south-1.amazonaws.com/dev/items', {
+        const response = await fetch('https://zen4z8f70l.execute-api.ap-south-1.amazonaws.com/dev/items', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: this.name, email: this.email })
@@ -46,7 +46,7 @@ export default {
     },
     async fetchUsers() {
       try {
-        const response = await fetch('https://bn5bws8gj4.execute-api.ap-south-1.amazonaws.com/dev/items')
+        const response = await fetch('https://zen4z8f70l.execute-api.ap-south-1.amazonaws.com/dev/items')
         const data = await response.json()
         this.users = data.items || []   // assuming API returns { items: [...] }
       } catch (err) {
